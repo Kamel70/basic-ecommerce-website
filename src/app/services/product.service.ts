@@ -22,10 +22,10 @@ export class ProductService {
 
   addToCart(product: IProduct) {
     this.cartProducts.push(product);
-    this.cartProductsSignal.set(this.cartProducts);
+    this.cartProductsSignal.update(() => this.cartProducts);
   }
   removeFromCart(product: IProduct) {
     this.cartProducts.filter((p) => p.id !== product.id);
-    this.cartProductsSignal.set(this.cartProducts);
+    this.cartProductsSignal.update(() => this.cartProducts);
   }
 }

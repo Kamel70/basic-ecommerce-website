@@ -4,7 +4,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/home">Home</a></li>
       <li class="breadcrumb-item"><a href="/products">Products</a></li>
-      <li class="breadcrumb-item active">{{ product?.category }}</li>
+      <li class="breadcrumb-item active">{{ product.category }}</li>
     </ol>
   </nav>
 
@@ -13,18 +13,18 @@
     <div class="col-md-6 mb-4">
       <div class="main-image mb-3">
         <img
-          [src]="product?.thumbnail"
+          [src]="product.thumbnail"
           class="img-fluid rounded"
-          alt="{{ product?.title }}"
+          alt="{{ product.title }}"
         />
       </div>
       <div class="thumbnails d-flex gap-2 flex-wrap">
-        @for (image of product?.images; track image) {
+        @for (image of product.images; track image) {
         <img
           [src]="image"
           class="img-thumbnail"
           style="width: 80px; cursor: pointer"
-          [alt]="product?.title"
+          [alt]="product.title"
         />
         }
       </div>
@@ -32,7 +32,7 @@
 
     <!-- Product Info -->
     <div class="col-md-6">
-      <h2 class="mb-3">{{ product?.title }}</h2>
+      <h2 class="mb-3">{{ product.title }}</h2>
 
       <!-- Rating -->
       <div class="mb-3">
@@ -42,7 +42,7 @@
           [class.text-warning]="star <= product.rating"
         ></i>
         }
-        <span class="ms-2">({{ product?.rating }})</span>
+        <span class="ms-2">({{ product.rating }})</span>
       </div>
 
       <!-- Price -->
@@ -56,7 +56,7 @@
             ${{ product.price.toFixed(2) }}
           </small>
           <span class="badge bg-danger ms-2"
-            >-{{ product?.discountPercentage }}%</span
+            >-{{ product.discountPercentage }}%</span
           >
         </h3>
         } @else {
@@ -68,7 +68,7 @@
       <div class="mb-3">
         @if (product.stock > 0) {
         <span class="badge bg-success"
-          >In Stock ({{ product?.stock }} units)</span
+          >In Stock ({{ product.stock }} units)</span
         >
         } @else {
         <span class="badge bg-danger">Out of Stock</span>
@@ -78,7 +78,7 @@
       <!-- Description -->
       <div class="mb-4">
         <h5>Description</h5>
-        <p>{{ product?.description }}</p>
+        <p>{{ product.description }}</p>
       </div>
 
       <!-- Specifications -->
@@ -88,11 +88,11 @@
           <tbody>
             <tr>
               <th>SKU</th>
-              <td>{{ product?.sku }}</td>
+              <td>{{ product.sku }}</td>
             </tr>
             <tr>
               <th>Weight</th>
-              <td>{{ product?.weight }} kg</td>
+              <td>{{ product.weight }} kg</td>
             </tr>
             <tr>
               <th>Dimensions</th>
@@ -104,7 +104,7 @@
             </tr>
             <tr>
               <th>Minimum Order</th>
-              <td>{{ product?.minimumOrderQuantity }} units</td>
+              <td>{{ product.minimumOrderQuantity }} units</td>
             </tr>
           </tbody>
         </table>
@@ -113,7 +113,7 @@
       <!-- Tags -->
       <div class="mb-4">
         <h5>Tags</h5>
-        @for (tag of product?.tags; track tag) {
+        @for (tag of product.tags; track tag) {
         <span class="badge bg-light text-dark me-2">{{ tag }}</span>
         }
       </div>
@@ -126,7 +126,7 @@
             class="form-control"
             value="1"
             min="1"
-            [max]="product?.stock"
+            [max]="product.stock"
           />
           <button class="btn btn-primary">
             <i class="fas fa-cart-plus me-2"></i>Add to Cart
@@ -171,13 +171,13 @@
 
       <div class="tab-content p-4 border border-top-0">
         <div class="tab-pane fade show active" id="shipping">
-          <p>{{ product?.shippingInformation }}</p>
+          <p>{{ product.shippingInformation }}</p>
         </div>
         <div class="tab-pane fade" id="warranty">
-          <p>{{ product?.warrantyInformation }}</p>
+          <p>{{ product.warrantyInformation }}</p>
         </div>
         <div class="tab-pane fade" id="returns">
-          <p>{{ product?.returnPolicy }}</p>
+          <p>{{ product.returnPolicy }}</p>
         </div>
       </div>
     </div>
@@ -187,7 +187,7 @@
   <div class="row mt-5">
     <div class="col-12">
       <h3>Customer Reviews</h3>
-      @for (review of product?.reviews; track review) {
+      @for (review of product.reviews; track review) {
       <div class="card mb-3">
         <div class="card-body">
           <div class="d-flex justify-content-between">
