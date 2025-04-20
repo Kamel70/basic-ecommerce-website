@@ -1,0 +1,104 @@
+<div class="card h-100 shadow-sm">
+  <!-- product() Image Carousel -->
+  <div
+    id="carousel-{{ product().id }}"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-inner">
+      @for (image of product().images; track $index) {
+      <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+        <img
+          [src]="image"
+          class="d-block w-100"
+          alt="{{ product().title }}"
+          style="height: 200px; object-fit: cover"
+        />
+      </div>
+      }
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      [attr.data-bs-target]="'#carousel-' + product().id"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      [attr.data-bs-target]="'#carousel-' + product().id"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <!-- Category Badge -->
+    <span class="badge bg-secondary mb-2">{{ product().category }}</span>
+
+    <!-- Title -->
+    <h5 class="card-title">{{ product().title }}</h5>
+
+    <!-- Rating -->
+    <div class="mb-2">
+      @for (star of [1,2,3,4,5]; track star) {
+      <i
+        class="fas fa-star"
+        [class.text-warning]="star <= product().rating"
+      ></i>
+      }
+      <small class="ms-1">({{ product().rating }})</small>
+    </div>
+
+    <!-- Price Section -->
+    <div class="d-flex align-items-center mb-2">
+      @if (product().discountPercentage > 0) {
+      <h5 class="text-danger mb-0">
+        ${{
+          (product().price * (1 - product().discountPercentage / 100)).toFixed(
+            2
+          )
+        }}
+      </h5>
+      <small class="text-muted text-decoration-line-through ms-2">
+        ${{ product().price.toFixed(2) }}
+      </small>
+      } @else {
+      <h5 class="mb-0">${{ product().price.toFixed(2) }}</h5>
+      }
+    </div>
+
+    <!-- Stock Status -->
+    <p class="small mb-2">
+      <i class="fas fa-box me-1"></i>
+      Stock: {{ product().stock }} units
+    </p>
+
+    <!-- Tags -->
+    <div class="mb-2">
+      @for (tag of product().tags; track tag) {
+      <span class="badge bg-light text-dark me-1">{{ tag }}</span>
+      }
+    </div>
+
+    <!-- Description -->
+    <p class="card-text small text-muted">
+      {{ product().description.slice(0, 100) }}...
+    </p>
+  </div>
+
+  <!-- Card Footer -->
+  <div class="card-footer bg-white border-top-0">
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="fas fa-info-circle me-2"></i>Details
+      </button>
+    </div>
+  </div>
+</div>
