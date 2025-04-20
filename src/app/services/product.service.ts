@@ -14,4 +14,7 @@ export class ProductService {
       'https://dummyjson.com/products?limit=10&skip=20'
     );
   }
+  getProductById(id: number) {
+    return this.http.get<IProduct>(`https://dummyjson.com/products/${id}`);
+  }
 }

@@ -1,0 +1,214 @@
+@if (product) {
+<div class="container py-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/home">Home</a></li>
+      <li class="breadcrumb-item"><a href="/products">Products</a></li>
+      <li class="breadcrumb-item active">{{ product?.category }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Product Images -->
+    <div class="col-md-6 mb-4">
+      <div class="main-image mb-3">
+        <img
+          [src]="product?.thumbnail"
+          class="img-fluid rounded"
+          alt="{{ product?.title }}"
+        />
+      </div>
+      <div class="thumbnails d-flex gap-2 flex-wrap">
+        @for (image of product?.images; track image) {
+        <img
+          [src]="image"
+          class="img-thumbnail"
+          style="width: 80px; cursor: pointer"
+          [alt]="product?.title"
+        />
+        }
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h2 class="mb-3">{{ product?.title }}</h2>
+
+      <!-- Rating -->
+      <div class="mb-3">
+        @for (star of [1,2,3,4,5]; track star) {
+        <i
+          class="fas fa-star"
+          [class.text-warning]="star <= product.rating"
+        ></i>
+        }
+        <span class="ms-2">({{ product?.rating }})</span>
+      </div>
+
+      <!-- Price -->
+      <div class="mb-3">
+        @if (product.discountPercentage > 0) {
+        <h3 class="text-danger">
+          ${{
+            (product.price * (1 - product.discountPercentage / 100)).toFixed(2)
+          }}
+          <small class="text-muted text-decoration-line-through ms-2">
+            ${{ product.price.toFixed(2) }}
+          </small>
+          <span class="badge bg-danger ms-2"
+            >-{{ product?.discountPercentage }}%</span
+          >
+        </h3>
+        } @else {
+        <h3>${{ product.price.toFixed(2) }}</h3>
+        }
+      </div>
+
+      <!-- Stock Status -->
+      <div class="mb-3">
+        @if (product.stock > 0) {
+        <span class="badge bg-success"
+          >In Stock ({{ product?.stock }} units)</span
+        >
+        } @else {
+        <span class="badge bg-danger">Out of Stock</span>
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        <h5>Description</h5>
+        <p>{{ product?.description }}</p>
+      </div>
+
+      <!-- Specifications -->
+      <div class="mb-4">
+        <h5>Specifications</h5>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>SKU</th>
+              <td>{{ product?.sku }}</td>
+            </tr>
+            <tr>
+              <th>Weight</th>
+              <td>{{ product?.weight }} kg</td>
+            </tr>
+            <tr>
+              <th>Dimensions</th>
+              <td>
+                {{ product.dimensions.depth }}d x
+                {{ product.dimensions.width }}W x
+                {{ product.dimensions.height }}H cm
+              </td>
+            </tr>
+            <tr>
+              <th>Minimum Order</th>
+              <td>{{ product?.minimumOrderQuantity }} units</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tags -->
+      <div class="mb-4">
+        <h5>Tags</h5>
+        @for (tag of product?.tags; track tag) {
+        <span class="badge bg-light text-dark me-2">{{ tag }}</span>
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-grid gap-2">
+        <div class="input-group mb-3">
+          <input
+            type="number"
+            class="form-control"
+            value="1"
+            min="1"
+            [max]="product?.stock"
+          />
+          <button class="btn btn-primary">
+            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Information Tabs -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <ul class="nav nav-tabs" id="productTabs" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            id="shipping-tab"
+            data-bs-toggle="tab"
+            href="#shipping"
+            >Shipping</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="warranty-tab"
+            data-bs-toggle="tab"
+            href="#warranty"
+            >Warranty</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="returns-tab"
+            data-bs-toggle="tab"
+            href="#returns"
+            >Returns</a
+          >
+        </li>
+      </ul>
+
+      <div class="tab-content p-4 border border-top-0">
+        <div class="tab-pane fade show active" id="shipping">
+          <p>{{ product?.shippingInformation }}</p>
+        </div>
+        <div class="tab-pane fade" id="warranty">
+          <p>{{ product?.warrantyInformation }}</p>
+        </div>
+        <div class="tab-pane fade" id="returns">
+          <p>{{ product?.returnPolicy }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3>Customer Reviews</h3>
+      @for (review of product?.reviews; track review) {
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="mb-0">{{ review.reviewerName }}</h6>
+              <div class="mb-2">
+                @for (star of [1,2,3,4,5]; track star) {
+                <i
+                  class="fas fa-star"
+                  [class.text-warning]="star <= review.rating"
+                ></i>
+                }
+              </div>
+            </div>
+            <small class="text-muted">{{ review.date }}</small>
+          </div>
+          <p class="mb-0">{{ review.comment }}</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}
