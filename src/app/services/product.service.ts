@@ -12,10 +12,8 @@ export class ProductService {
   }
   http = inject(HttpClient);
   // apiUrl = 'https://fakestoreapi.com/products';
-  cartProducts: IProduct[] = [];
-  cartProductsSignal = signal(this.cartProducts);
-  // private cartProducts: CartItem[] = [];
-  // cartProductsSignal = signal<CartItem[]>([]);
+  cartProducts: CartItem[] = [];
+  cartProductsSignal = signal<CartItem[]>(this.cartProducts);
   getProducts() {
     return this.http.get<IproductApi>(
       'https://dummyjson.com/products?limit=10&skip=20'
@@ -26,15 +24,33 @@ export class ProductService {
   }
 
   addToCart(product: IProduct) {
-    this.cartProducts.push(product);
-    this.cartProductsSignal.set(this.cartProducts);
-    localStorage.setItem('cart', JSON.stringify(this.cartProducts));
+    let existProduct = this.cartProducts.find((c) => c.id == product.id);
+    if (existProduct) {
+      existProduct.quantity++;
+      return;
+    } else {
+      this.cartProducts.push({ id: product.id, Product: product, quantity: 1 });
+    }
+    this.saveCart();
   }
   removeFromCart(product: IProduct) {
-    this.cartProducts.filter((p) => p.id !== product.id);
-    this.cartProductsSignal.update(() => this.cartProducts);
-    localStorage.setItem('cart', JSON.stringify(this.cartProducts));
-    this.loadCart();
+    let existProduct = this.cartProducts.find((c) => c.id == product.id);
+    if (existProduct) {
+      if (existProduct.quantity > 1) {
+        existProduct.quantity--;
+      } else {
+        this.cartProducts = this.cartProducts.splice(
+          this.cartProducts.indexOf({
+            id: product.id,
+            Product: product,
+            quantity: 1,
+          }),
+          1
+        );
+      }
+      this.saveCart();
+    }
+    // this.loadCart();
   }
   loadCart() {
     const savedCart = localStorage.getItem('cart');
@@ -42,5 +58,9 @@ export class ProductService {
       this.cartProducts = JSON.parse(savedCart);
       this.cartProductsSignal.set(this.cartProducts);
     }
+  }
+  saveCart() {
+    this.cartProductsSignal.update(() => this.cartProducts);
+    localStorage.setItem('cart', JSON.stringify(this.cartProducts));
   }
 }
