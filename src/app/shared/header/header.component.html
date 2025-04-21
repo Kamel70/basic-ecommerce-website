@@ -26,21 +26,4 @@
       </ul>
     </div>
   </nav>
-  <input type="text" class="form-control mt-3" placeholder="Add Task" #task />
-  <input
-    type="submit"
-    class="btn btn-primary mt-2"
-    value="Add"
-    (click)="addTask(task.value)"
-  />
-  @for (task of tasks; track $index) {
-  <div
-    class="alert alert-primary mt-2 d-flex justify-content-between align-items-center"
-    role="alert"
-  >
-    {{ task }}
-    <button type="button" class="btn-close" (click)="removeTask(task)"></button>
-  </div>
-  }
 </div>
-<p>header works!</p>

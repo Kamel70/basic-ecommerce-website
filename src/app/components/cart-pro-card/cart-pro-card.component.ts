@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { IProduct } from '../../interfaces/iproduct';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-cart-pro-card',
@@ -8,20 +9,21 @@ import { IProduct } from '../../interfaces/iproduct';
   styleUrl: './cart-pro-card.component.css',
 })
 export class CartProCardComponent {
+  service = inject(ProductService);
   quantity() {
-    throw new Error('Method not implemented.');
+    console.log('Quantity:');
   }
   updateQuantity($event: Event) {
-    throw new Error('Method not implemented.');
+    console.log('Quantity:');
   }
   increaseQuantity() {
-    throw new Error('Method not implemented.');
+    console.log('Quantity:');
   }
   calculateTotal(): number {
-    throw new Error('Method not implemented.');
+    return 0;
   }
-  removeFromCart() {
-    throw new Error('Method not implemented.');
+  removeFromCart(product: IProduct) {
+    this.service.removeFromCart(product);
   }
   product = input.required<IProduct>();
 }

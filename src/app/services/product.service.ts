@@ -34,6 +34,7 @@ export class ProductService {
     this.cartProducts.filter((p) => p.id !== product.id);
     this.cartProductsSignal.update(() => this.cartProducts);
     localStorage.setItem('cart', JSON.stringify(this.cartProducts));
+    this.loadCart();
   }
   loadCart() {
     const savedCart = localStorage.getItem('cart');
