@@ -1,6 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { IProduct } from '../../interfaces/iproduct';
 import { ProductService } from '../../services/product.service';
+import { CartItem } from '../../interfaces/cart-item';
 
 @Component({
   selector: 'app-cart-pro-card',
@@ -10,20 +11,20 @@ import { ProductService } from '../../services/product.service';
 })
 export class CartProCardComponent {
   service = inject(ProductService);
-  quantity() {
-    console.log('Quantity:');
+  quantity(quantity: number): number {
+    return quantity;
   }
-  updateQuantity($event: Event) {
-    console.log('Quantity:');
+  increaseQuantity(product: IProduct) {
+    this.service.addToCart(product);
   }
-  increaseQuantity() {
-    console.log('Quantity:');
+  decreaseQuantity(product: IProduct) {
+    this.service.decreaseQuantity(product);
   }
-  calculateTotal(): number {
-    return 0;
+  calculateTotal(quantity: number, price: number): number {
+    return quantity * price;
   }
   removeFromCart(product: IProduct) {
     this.service.removeFromCart(product);
   }
-  product = input.required<IProduct>();
+  product = input.required<CartItem>();
 }

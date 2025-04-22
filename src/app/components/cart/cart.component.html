@@ -1,9 +1,7 @@
 <div class="container py-5">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-    @for (product of products; track product.id) {
-    <div class="col">
-      <app-cart-pro-card [product]="product.Product"></app-cart-pro-card>
-    </div>
-    }
+  @for (product of products(); track product.id) {
+  <div class="col">
+    <app-cart-pro-card [product]="product"></app-cart-pro-card>
   </div>
+  }
 </div>

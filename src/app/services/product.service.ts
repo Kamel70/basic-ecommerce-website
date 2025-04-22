@@ -27,31 +27,30 @@ export class ProductService {
     let existProduct = this.cartProducts.find((c) => c.id == product.id);
     if (existProduct) {
       existProduct.quantity++;
-      return;
     } else {
       this.cartProducts.push({ id: product.id, Product: product, quantity: 1 });
     }
     this.saveCart();
+    console.log(this.cartProducts);
   }
   removeFromCart(product: IProduct) {
+    this.cartProducts = this.cartProducts.filter((c) => c.id != product.id);
+    this.saveCart();
+    console.log(this.cartProducts);
+    console.log(this.cartProductsSignal());
+    this.loadCart();
+  }
+  decreaseQuantity(product: IProduct) {
     let existProduct = this.cartProducts.find((c) => c.id == product.id);
     if (existProduct) {
       if (existProduct.quantity > 1) {
         existProduct.quantity--;
-      } else {
-        this.cartProducts = this.cartProducts.splice(
-          this.cartProducts.indexOf({
-            id: product.id,
-            Product: product,
-            quantity: 1,
-          }),
-          1
-        );
+        this.saveCart();
+        console.log(this.cartProducts);
       }
-      this.saveCart();
     }
-    // this.loadCart();
   }
+
   loadCart() {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -60,7 +59,7 @@ export class ProductService {
     }
   }
   saveCart() {
-    this.cartProductsSignal.update(() => this.cartProducts);
+    this.cartProductsSignal.update(() => [...this.cartProducts]);
     localStorage.setItem('cart', JSON.stringify(this.cartProducts));
   }
 }

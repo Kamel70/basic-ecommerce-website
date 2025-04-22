@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, computed, inject } from '@angular/core';
 import { IProduct } from '../../interfaces/iproduct';
 import { ProductService } from '../../services/product.service';
 import { CartProCardComponent } from '../cart-pro-card/cart-pro-card.component';
@@ -10,10 +10,7 @@ import { CartItem } from '../../interfaces/cart-item';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
-export class CartComponent implements AfterViewInit {
-  ngAfterViewInit(): void {
-    console.log(this.service.cartProducts);
-  }
+export class CartComponent {
   service = inject(ProductService);
-  products: CartItem[] = this.service.cartProducts;
+  products = computed(() => this.service.cartProductsSignal());
 }

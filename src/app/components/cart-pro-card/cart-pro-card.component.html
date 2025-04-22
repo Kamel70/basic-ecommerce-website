@@ -3,88 +3,99 @@
     <!-- Product Image -->
     <div class="col-md-2">
       <img
-        [src]="product().thumbnail"
+        [src]="product().Product.thumbnail"
         class="img-fluid rounded-start"
-        alt="{{ product().title }}"
+        alt="{{ product().Product.title }}"
         style="height: 100%; object-fit: cover"
       />
     </div>
 
     <!-- Product Details -->
-    <div class="col-md-7">
+    <div class="col-md-6">
       <div class="card-body">
-        <h5 class="card-title">{{ product().title }}</h5>
+        <h5 class="card-title">{{ product().Product.title }}</h5>
 
         <!-- Price Section -->
         <div class="d-flex align-items-center mb-2">
-          @if (product().discountPercentage > 0) {
+          @if (product().Product.discountPercentage > 0) {
           <h6 class="text-danger mb-0">
             ${{
               (
-                product().price *
-                (1 - product().discountPercentage / 100)
+                product().Product.price *
+                (1 - product().Product.discountPercentage / 100)
               ).toFixed(2)
             }}
             <small class="text-muted text-decoration-line-through ms-2">
-              ${{ product().price.toFixed(2) }}
+              ${{ product().Product.price.toFixed(2) }}
             </small>
           </h6>
           } @else {
-          <h6 class="mb-0">${{ product().price.toFixed(2) }}</h6>
+          <h6 class="mb-0">${{ product().Product.price.toFixed(2) }}</h6>
           }
         </div>
 
         <!-- Stock Status -->
         <p class="card-text small">
-          <span [class]="product().stock > 0 ? 'text-success' : 'text-danger'">
-            {{ product().stock > 0 ? "In Stock" : "Out of Stock" }}
+          <span
+            [class]="
+              product().Product.stock > 0 ? 'text-success' : 'text-danger'
+            "
+          >
+            {{ product().Product.stock > 0 ? "In Stock" : "Out of Stock" }}
           </span>
         </p>
       </div>
     </div>
 
     <!-- Quantity and Actions -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="card-body">
         <!-- Quantity Control -->
-        <div class="input-group mb-3">
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            (click)="increaseQuantity()"
-          >
-            <i class="fas fa-minus"></i>
-          </button>
-          <input
-            type="number"
-            class="form-control text-center"
-            [value]="quantity()"
-            min="1"
-            [max]="product().stock"
-            (change)="updateQuantity($event)"
-          />
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            (click)="increaseQuantity()"
-          >
-            <i class="fas fa-plus"></i>
-          </button>
-        </div>
-
         <!-- Total Price -->
         <p class="text-end mb-2">
-          <strong>Total: ${{ calculateTotal().toFixed(2) }}</strong>
+          <strong
+            >Total: ${{
+              calculateTotal(
+                product().quantity,
+                product().Product.price *
+                  (1 - product().Product.discountPercentage / 100)
+              ).toFixed(2)
+            }}</strong
+          >
         </p>
 
         <!-- Remove Button -->
-        <button
-          class="btn btn-outline-danger btn-sm w-100"
-          (click)="removeFromCart(product())"
-        >
-          <i class="fas fa-trash-alt me-2"></i>Remove
-        </button>
       </div>
     </div>
+    <div class="input-group col-md-2">
+      <button
+        class="btn btn-outline-secondary w-15"
+        type="button"
+        (click)="decreaseQuantity(product().Product)"
+      >
+        <i class="fas fa-minus"></i>
+      </button>
+      <input
+        type="number"
+        class="form-control text-center"
+        [value]="quantity(product().quantity)"
+        min="1"
+        [max]="product().Product.stock"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="increaseQuantity(product().Product)"
+      >
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
   </div>
+  <button
+    class="btn btn-outline-danger btn-sm align-self-center mb-3"
+    (click)="removeFromCart(product().Product)"
+    style="width: 70%"
+  >
+    <i class="fas fa-trash-alt me-2"></i>Remove
+  </button>
 </div>
